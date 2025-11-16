@@ -90,7 +90,7 @@ const IndexPage = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">� Tryy indexing a blog post, documentation page, or article</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">� Try indexing a blog post, documentation page, or article</p>
           <button
             onClick={() => navigate('/chat')}
             className="cursor-pointer duration-200 text-md text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 underline font-medium"
