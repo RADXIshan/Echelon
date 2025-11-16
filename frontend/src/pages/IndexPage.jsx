@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../utils.js'
+import ThemeToggle from '../components/ThemeToggle'
 
 const IndexPage = () => {
   const [url, setUrl] = useState('')
@@ -28,24 +29,25 @@ const IndexPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white flex justify-center items-center p-6">
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex justify-center items-center p-6 transition-colors">
+      <div className="cursor-pointer absolute top-6 right-6">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-2xl">
         <div className="text-center mb-8 animate-fadeIn">
-          <div className="w-16 h-16 bg-black rounded-xl flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-            </svg>
+          <div className="w-16 h-16 bg-black dark:bg-white rounded-xl flex items-center justify-center mx-auto mb-6">
+            <img src="/logo.png" alt="Echelon Logo" className="w-12 h-12" />
           </div>
-          <h1 className="text-5xl font-bold text-gray-900 mb-3">
+          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-3">
             Echelon
           </h1>
-          <p className="text-gray-600 text-lg mb-8">
+          <p className="text-gray-600 dark:text-gray-400 text-lg mb-8">
             Index a website to start chatting with its content
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200">
-          <label className="block text-sm font-medium text-gray-900 mb-3">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-8 border border-gray-200 dark:border-gray-700">
+          <label className="block text-sm font-medium text-gray-900 dark:text-white mb-3">
             Enter Website URL
           </label>
           <div className="flex flex-col gap-3">
@@ -53,13 +55,13 @@ const IndexPage = () => {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://example.com"
-              className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400 transition-all"
+              className="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all"
               onKeyDown={(e) => e.key === 'Enter' && handleIndex()}
               autoFocus
             />
             <button
               onClick={handleIndex}
-              className="cursor-pointer duration-200 w-full bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium text-base flex items-center justify-center gap-2"
+              className="cursor-pointer duration-200 w-full bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black px-6 py-3 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium text-base flex items-center justify-center gap-2"
               disabled={loading || !url.trim()}
             >
               {loading ? (
@@ -81,17 +83,17 @@ const IndexPage = () => {
             </button>
           </div>
           {indexingMessage && (
-            <div className="mt-4 text-sm text-gray-700 bg-gray-50 px-4 py-3 rounded-lg animate-fadeIn border border-gray-200">
+            <div className="mt-4 text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-lg animate-fadeIn border border-gray-200 dark:border-gray-600">
               {indexingMessage}
             </div>
           )}
         </div>
 
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500 mb-3">� Tryy indexing a blog post, documentation page, or article</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">� Tryy indexing a blog post, documentation page, or article</p>
           <button
             onClick={() => navigate('/chat')}
-            className="cursor-pointer duration-200 text-md text-gray-900 hover:text-gray-700 underline font-medium"
+            className="cursor-pointer duration-200 text-md text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 underline font-medium"
           >
             Skip to chat →
           </button>
