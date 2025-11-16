@@ -9,4 +9,4 @@ services:
       - key: PYTHON_VERSION
         value: 3.10.0
       - key: CLIENT_URL
-        value: https://bubble-client-zeta.vercel.app
+        value: https://ragchatbot-client.vercel.app/
