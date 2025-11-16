@@ -22,6 +22,8 @@ def startup_event():
 
 origins = [
     CLIENT_URL,
+    "https://ragchatbot-client.vercel.app",
+    "https://localhost:5173"
 ]
 
 app.add_middleware(
