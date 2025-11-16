@@ -162,15 +162,57 @@ def create_collection_if_not_exists(collection_name: str):
             raise
 
 def upload_website_to_collection(url: str):
-    loader = WebBaseLoader(url)
-    documents = loader.load_and_split(text_splitter)
-    for doc in documents:
-        metadata = dict(doc.metadata) if getattr(doc, "metadata", None) else {}
-        metadata["source_url"] = url
-        doc.metadata = metadata
+    try:
+        # Ensure collection exists before attempting to upload
+        create_collection_if_not_exists(collection_name)
+        
+        # Configure comprehensive headers to avoid being blocked by websites
+        header_template = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+            'Cache-Control': 'max-age=0'
+        }
+        
+        # Configure requests with timeout and retries
+        requests_kwargs = {
+            'timeout': 30,
+            'verify': True,
+            'allow_redirects': True
+        }
+        
+        loader = WebBaseLoader(
+            web_paths=[url], 
+            header_template=header_template,
+            requests_kwargs=requests_kwargs
+        )
+        documents = loader.load()
+        
+        if not documents:
+            raise ValueError(f"No content could be extracted from {url}. The site may be blocking scrapers or the URL may be invalid.")
+        
+        # Split documents
+        split_documents = text_splitter.split_documents(documents)
+        
+        if not split_documents:
+            raise ValueError(f"No content could be split from {url}. The page may be empty.")
+        
+        # Add metadata
+        for doc in split_documents:
+            metadata = dict(doc.metadata) if getattr(doc, "metadata", None) else {}
+            metadata["source_url"] = url
+            doc.metadata = metadata
 
-    vector_store.add_documents(documents)
-    return(f"Successfully uploaded {len(documents)} documents to collection {collection_name}")
+        vector_store.add_documents(split_documents)
+        return f"Successfully uploaded {len(split_documents)} documents to collection {collection_name}"
+    except Exception as e:
+        raise Exception(f"Failed to index {url}: {str(e)}")
 
 # create_collection_if_not_exists(collection_name)
 # upload_website_to_collection("https://hamel.dev/blog/posts/evals")

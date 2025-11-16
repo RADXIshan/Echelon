@@ -51,7 +51,20 @@ def chat(message: str):
 @app.post("/indexing", description="Index a website URL through this endpoint")
 def indexing(url: str):
     try:
-        upload_website_to_collection(url)
+        print(f"Attempting to index URL: {url}")
+        
+        # Validate URL format
+        if not url or not url.strip():
+            return JSONResponse(content={ "message": "URL cannot be empty" }, status_code=400)
+        
+        if not (url.startswith("http://") or url.startswith("https://")):
+            return JSONResponse(content={ "message": "URL must start with http:// or https://" }, status_code=400)
+        
+        result = upload_website_to_collection(url)
+        print(f"Indexing result: {result}")
         return JSONResponse(content={ "message": "Website indexed successfully" }, status_code=200)
     except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Error indexing website: {error_details}")
         return JSONResponse(content={ "message": f"Error indexing website: {str(e)}" }, status_code=500)
