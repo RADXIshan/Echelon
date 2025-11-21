@@ -1,5 +1,7 @@
 # Echelon - RAG-Powered Chatbot
 
+Live Demo: [RAG ChatBot - AI Assistant](https://ragchatbot-client.vercel.app/)
+
 A modern, full-stack RAG (Retrieval-Augmented Generation) chatbot that indexes websites and answers questions based on the indexed content. Built with FastAPI, React, LangChain, and Qdrant vector database.
 
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
