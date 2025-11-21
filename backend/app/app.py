@@ -23,15 +23,16 @@ def startup_event():
 origins = [
     CLIENT_URL,
     "https://ragchatbot-client.vercel.app",
-    "https://localhost:5173"
+    "http://localhost:5173",
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 @app.get("/")
