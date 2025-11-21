@@ -9,6 +9,14 @@ A modern, full-stack RAG (Retrieval-Augmented Generation) chatbot that indexes w
 ![React](https://img.shields.io/badge/React-19.2-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
+## Screenshots
+
+### Home Page
+![Home Page](frontend/src/assets/index.png)
+
+### Chat Interface
+![Chat Interface](frontend/src/assets/chat.png)
+
 ## Features
 
 - **Website Indexing**: Scrape and index any website URL into a vector database
