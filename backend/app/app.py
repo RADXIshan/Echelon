@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.rag import get_answer_and_docs
-from app.qdrant import upload_website_to_collection, create_collection_if_not_exists, collection_name
+from app.qdrant import upload_website_to_collection, create_collection_if_not_exists, collection_name, check_collection_has_documents
 
 load_dotenv()
 
@@ -41,6 +41,15 @@ def server_status():
 
 @app.post("/chat", description="Chat with RAG API through this endpoint")
 def chat(message: str):
+    # Check if collection has any documents
+    if not check_collection_has_documents(collection_name):
+        response_content = {
+            "question": message,
+            "answer": "No website has been provided yet. Please index a website first by clicking the 'Index Website' button above and entering a URL.",
+            "docs": [],
+        }
+        return JSONResponse(content=response_content, status_code=200)
+    
     response = get_answer_and_docs(message)
     response_content = {
         "question": message,

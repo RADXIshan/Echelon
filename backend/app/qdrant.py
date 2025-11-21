@@ -161,6 +161,15 @@ def create_collection_if_not_exists(collection_name: str):
         else:
             raise
 
+def check_collection_has_documents(collection_name: str) -> bool:
+    """Check if the collection exists and has any documents."""
+    try:
+        collection_info = qdrant_client.get_collection(collection_name=collection_name)
+        return collection_info.points_count > 0
+    except Exception as e:
+        print(f"Error checking collection: {e}")
+        return False
+
 def upload_website_to_collection(url: str):
     try:
         # Ensure collection exists before attempting to upload
@@ -214,5 +223,3 @@ def upload_website_to_collection(url: str):
     except Exception as e:
         raise Exception(f"Failed to index {url}: {str(e)}")
 
-# create_collection_if_not_exists(collection_name)
-# upload_website_to_collection("https://hamel.dev/blog/posts/evals")
